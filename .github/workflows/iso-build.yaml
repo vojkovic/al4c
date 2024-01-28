@@ -36,6 +36,6 @@ jobs:
       - uses: softprops/action-gh-release@v1
         with:
           files: /tmp/archlive/out/*.iso
-          tag_name: "archlinux-$(date +'%Y%m%d')"
+          tag_name: "archlinux"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
