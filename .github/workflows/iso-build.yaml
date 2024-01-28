@@ -33,7 +33,8 @@ jobs:
       - run: pacman-key --init
       - run: pacman --noconfirm -Sy archlinux-keyring
       - run: ./build_iso.sh
-      - uses: actions/upload-artifact@v3
+      - uses: softprops/action-gh-release@v1
         with:
-          name: Arch Live ISO
-          path: /tmp/archlive/out/*.iso
+          files: /tmp/archlive/out/*.iso
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
