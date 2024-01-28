@@ -97,37 +97,6 @@ manage_users() {
   echo "Password for root user successfully set to '$password'."
 }
 
-remove_artix(){
-        sed -i '/^artix/d' /etc/shadow
-}
-
-
-rank_and_replace_mirrorlist() {
-  if command -v rankmirrors >/dev/null 2>&1; then
-    rankmirrors -n 20 /etc/pacman.d/mirrorlist > mirrorlist
-    mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.old
-    mv mirrorlist /etc/pacman.d/mirrorlist
-    echo "Mirrorlist successfully ranked and replaced."
-  else
-    echo "rankmirrors command not found. Please make sure it is installed."
-  fi
-}
-
-install_grub(){
-        pacman --noconfirm -Rcns artix-grub-live && pacman --noconfirm  -S metis-grub-live || echo "Couldn't install grub".
-}
-
-# execute
-#make_tty
-#install_grub
-
-make_grub(){
-        mv background.png /var/lib/artools/buildiso/base/artix/rootfs/usr/share/grub/themes/artix/background.png
-        mv logo.png /var/lib/artools/buildiso/base/artix/rootfs/usr/share/grub/themes/artix/logo.png
-}
-
-#make_grub
-
 update_db
 rank_and_replace_mirrorlist
 remove_artix
