@@ -16,6 +16,7 @@ cp -r . /tmp/archlive/airootfs/root/al4c-git
 cat <<- _EOF_ | tee /tmp/archlive/airootfs/root/.zprofile
 	echo "This ISO was built from Git SHA $GITHUB_SHA"
 	cd al4c-git
+	chmod +x iso_execute.sh
 	./iso_execute.sh
 _EOF_
 
