@@ -34,10 +34,3 @@ systemctl enable cronie
 
 # Exit chroot
 exit
-
-# Unmount filesystems
-umount -R /mnt
-swapoff -a
-
-# Reboot
-shutdown -r now

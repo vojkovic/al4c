@@ -31,3 +31,10 @@ _EOF_
 
 # Chroot into new system
 arch-chroot /mnt
+
+# Unmount filesystems
+umount -R /mnt
+swapoff -a
+
+# Reboot
+shutdown -r now
