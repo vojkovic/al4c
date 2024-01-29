@@ -60,6 +60,9 @@ done
 rm -f yay_download.tar.gz
 rm -rf yay_12.2.0_x86_64
 
+# Install linux-xanmod as a prebuilt binary
+yay -S --answerclean All --answerdiff None --noconfirm linux-xanmod-bin
+
 # initramfs
 mkinitcpio -P
 

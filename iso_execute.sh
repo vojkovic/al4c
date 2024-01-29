@@ -12,7 +12,7 @@ swapon "/dev/vda2"
 mount "/dev/vda1" /mnt
 
 # Install base system and install misc basic utilities (mtr, btop, curl, vim, etc.)
-pacstrap -K /mnt base linux mtr btop curl vim dhcpcd grub openssh cronie networkmanager
+pacstrap -K /mnt base mtr git btop curl vim dhcpcd grub openssh cronie networkmanager fakeroot jq pahole
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
