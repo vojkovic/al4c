@@ -22,15 +22,20 @@ cp chroot_execute.sh /mnt/root/chroot_execute.sh
 
 # Run from .bashrc
 cat <<- _EOF_ | tee /mnt/root/.bashrc
-  # Run chroot_execute.sh
+  # Run chroot_execute.sh on first start
   if [ -f "/root/chroot_execute.sh" ]; then
     chmod +x /root/chroot_execute.sh
     /root/chroot_execute.sh
+    exit
   fi
 _EOF_
 
 # Chroot into new system
 arch-chroot /mnt
+
+# Cleanup files
+rm -f /root/chroot_execute.sh
+rm -f /root/.bashrc
 
 # Unmount filesystems
 umount -R /mnt
