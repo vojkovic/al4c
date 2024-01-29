@@ -27,12 +27,12 @@ grub-install --target=i386-pc /dev/vda
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Download pfetch script to root home directory.
-wget -O /root/pfetch.sh https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch
+curl -o /root/pfetch.sh https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch
 chmod +x /root/pfetch.sh
 
 # Install openvpn server, fix error in openvpn permissions on archlinux.
 mkdir -p /root/ovpn
-wget -O /root/ovpn/openvpn.sh https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
+curl -o /root/ovpn/openvpn.sh https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
 chmod +x /root/ovpn/openvpn.sh
 APPROVE_INSTALL=y APPROVE_IP=y IPV6_SUPPORT=y PORT_CHOICE=1 PROTOCOL_CHOICE=1 DNS=5 COMPRESSION_ENABLED=n CUSTOMIZE_ENC=n CLIENT=client PASS=1 /root/ovpn/openvpn.sh
 sed -i '/^user /d; /^group /d' /etc/openvpn/server.conf
