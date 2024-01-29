@@ -19,13 +19,6 @@ echo $(curl -s https://ipapi.co/country) | tr '[:upper:]' '[:lower:]' > /etc/hos
 mkdir -p /root/.ssh
 echo "$SSH_KEY" > /root/.ssh/authorized_keys
 
-# initramfs
-mkinitcpio -P
-
-# boot loader
-grub-install --target=i386-pc /dev/vda
-grub-mkconfig -o /boot/grub/grub.cfg
-
 # Download pfetch script to root home directory.
 curl -o /root/pfetch.sh https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch
 chmod +x /root/pfetch.sh
@@ -42,6 +35,37 @@ mv /root/client.ovpn /root/ovpn/client.ovpn
 
 # Hardern SSHD config by disabling password auth (publickeys only)
 sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+
+# Edit pacman.conf to enable useful things for a server.
+sed -i 's/#Color/Color/' /etc/pacman.conf
+sed -i 's/#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf
+sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 50/' /etc/pacman.conf
+
+# Download yay package manager and check signature
+curl -L -o yay_download.tar.gz "https://github.com/Jguer/yay/releases/download/v12.2.0/yay_12.2.0_x86_64.tar.gz"
+echo "57a69ffe3259173acb2b28603301e23519b9770b0041d63fe716562b6b6be91e  yay_download.tar.gz" | sha256sum -c - || exit 1
+tar -xzf yay_download.tar.gz
+
+# Install yay package manager and add bash completion and man page
+install -Dm755 yay_12.2.0_x86_64/yay /usr/bin/yay
+install -Dm644 yay_12.2.0_x86_64/yay.8 /usr/share/man/man8/yay.8
+install -Dm644 yay_12.2.0_x86_64/bash /usr/share/bash-completion/completions/yay
+
+# Install yay translations
+for lang in ca cs de en es eu fr_FR he id it_IT ja ko pl_PL pt_BR pt ru_RU ru sv tr uk zh_CN zh_TW; do
+  install -Dm644 "yay_12.2.0_x86_64/${lang}.mo" /usr/share/locale/${lang}/LC_MESSAGES/yay.mo
+done
+
+# Cleanup yay files
+rm -f yay_download.tar.gz
+rm -rf yay_12.2.0_x86_64
+
+# initramfs
+mkinitcpio -P
+
+# boot loader
+grub-install --target=i386-pc /dev/vda
+grub-mkconfig -o /boot/grub/grub.cfg
 
 # Enable services
 systemctl enable sshd

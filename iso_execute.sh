@@ -12,7 +12,7 @@ swapon "/dev/vda2"
 mount "/dev/vda1" /mnt
 
 # Install base system and install misc basic utilities (mtr, btop, curl, vim, etc.)
-pacstrap -K /mnt base linux mtr btop curl vim dhcpcd grub openssh cronie networkmanager
+pacstrap -K /mnt base mtr btop curl vim dhcpcd grub openssh cronie networkmanager
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -34,8 +34,8 @@ _EOF_
 arch-chroot /mnt
 
 # Cleanup files
-rm -f /root/chroot_execute.sh
-rm -f /root/.bashrc
+rm -f /mnt/root/chroot_execute.sh
+rm -f /mnt/root/.bashrc
 
 # Unmount filesystems
 umount -R /mnt
