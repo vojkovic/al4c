@@ -1,7 +1,5 @@
 #!/bin/sh
 
-SSH_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINcIjMlhHk+GjietfvSXCb6huwkUwtBweW6Ap6+brock"
-
 # Partition drive and format filesystem & format swap (3GiB)
 parted -s "/dev/vda" mklabel msdos
 parted -s "/dev/vda" mkpart primary 1MiB 29GiB
@@ -19,43 +17,17 @@ pacstrap -K /mnt base linux mtr btop curl vim dhcpcd grub openssh cronie network
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
+# Copy chroot_execute.sh to new system
+cp chroot_execute.sh /mnt/root/chroot_execute.sh
+
+# Run from .bashrc
+cat <<- _EOF_ | tee /mnt/root/.bashrc
+  # Run chroot_execute.sh
+  if [ -f "/root/chroot_execute.sh" ]; then
+    chmod +x /root/chroot_execute.sh
+    /root/chroot_execute.sh
+  fi
+_EOF_
+
 # Chroot into new system
 arch-chroot /mnt
-
-# Timezone to Greenwich Mean Time
-ln -sf /usr/share/zoneinfo/GMT /etc/localtime
-hwclock --systohc
-
-# Set locale
-sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
-locale-gen
-
-# Set hostname to country of server by quering https://ipapi.co/country which returns a two letter country code (i.e. AU). Convert cc to lowercase.
-echo $(curl -s https://ipapi.co/country) | tr '[:upper:]' '[:lower:]' > /etc/hostname
-
-# Set ssh key
-mkdir -p /root/.ssh
-echo "$SSH_KEY" > /root/.ssh/authorized_keys
-
-# initramfs
-mkinitcpio -P
-
-# boot loader
-grub-install --target=i386-pc /dev/vda
-grub-mkconfig -o /boot/grub/grub.cfg
-
-# Enable services
-systemctl enable sshd
-systemctl enable dhcpcd
-systemctl enable NetworkManager
-systemctl enable cronie
-
-# Exit chroot
-exit
-
-# Unmount filesystems
-umount -R /mnt
-swapoff -a
-
-# Reboot
-shutdown -r now
