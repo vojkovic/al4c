@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Refresh arch keyring
+pacman -Sy archlinux-keyring --noconfirm
+
 # Partition drive and format filesystem & format swap (3GiB)
 parted -s "/dev/vda" mklabel msdos
 parted -s "/dev/vda" mkpart primary 1MiB 29GiB
@@ -47,7 +50,7 @@ cat <<- _EOF_ | tee /mnt/root/.bashrc
     chmod +x /root/first_boot.sh
     /root/first_boot.sh
     rm -rf /root/first_boot.sh
-    exit
+    rm -f /root/.bashrc && touch /root/.bashrc && reboot
   fi
 _EOF_
 
