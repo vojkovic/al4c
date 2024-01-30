@@ -1,10 +1,8 @@
 #!/bin/sh
 
 # Refresh arch keyring
-pacman -Sy archlinux-keyring --noconfirm
-pacman -Su
 pacman-key --init
-pacman-key --populate archlinux
+pacman-key --populate
 
 # Partition drive and format filesystem & format swap (3GiB)
 parted -s "/dev/vda" mklabel msdos
