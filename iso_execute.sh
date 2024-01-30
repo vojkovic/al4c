@@ -20,14 +20,15 @@ pacstrap -K /mnt base linux mtr git btop curl vim dhcpcd grub openssh cronie net
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# Copy chroot_execute.sh to new system
+# Copy chroot_execute.sh and first_boot.sh to new system
 cp chroot_execute.sh /mnt/root/chroot_execute.sh
-
+cp first_boot.sh /mnt/root/first_boot.sh
 # Run from .bashrc
 cat <<- _EOF_ | tee /mnt/root/.bashrc
   # Run chroot_execute.sh on first start
   if [ -f "/root/chroot_execute.sh" ]; then
     chmod +x /root/chroot_execute.sh
+    chmod +x /root/first_boot.sh
     /root/chroot_execute.sh
     exit
   fi
@@ -40,19 +41,9 @@ arch-chroot /mnt
 rm -f /mnt/root/chroot_execute.sh
 rm -f /mnt/root/.bashrc
 
-# Copy chroot_execute.sh to new system
-cp first_boot.sh /mnt/root/first_boot.sh
-
-# Run from .bashrc
-cat <<- _EOF_ | tee /mnt/root/.bashrc
-  # Run first_boot.sh on first start
-  if [ -f "/root/first_boot.sh" ]; then
-    chmod +x /root/first_boot.sh
-    /root/first_boot.sh
-    rm -rf /root/first_boot.sh
-    rm -f /root/.bashrc && touch /root/.bashrc && reboot
-  fi
-_EOF_
+# Copy firstboot services to new system
+cp systemd/firstboot/install-xanmod-kernel.conf /etc/systemd/system/install-xanmod-kernel.conf
+systemctl enable install-xanmod-kernel.service
 
 # Unmount filesystems
 umount -R /mnt
