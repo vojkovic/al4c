@@ -7,11 +7,16 @@ packages_file="/tmp/archlive/packages.x86_64"
 # Packages to add to the archiso profile packages
 packages=(
 	gcc
+	archlinux-keyring
 	git
 )
 
 mkdir -p /tmp/archlive/airootfs/root/al4c-git
 cp -r . /tmp/archlive/airootfs/root/al4c-git
+
+# Refresh arch keyring
+pacman-key --init
+pacman-key --populate
 
 cat <<- _EOF_ | tee /tmp/archlive/airootfs/root/.zprofile
 	echo "This ISO was built from Git SHA $GITHUB_SHA"
