@@ -12,7 +12,7 @@ packages=(
 )
 
 mkdir -p /tmp/archlive/airootfs/root/al4c-git
-cp -r . /tmp/archlive/airootfs/root/al4c-git
+cp -rf . /tmp/archlive/airootfs/root/al4c-git
 
 # Refresh arch keyring
 pacman-key --init

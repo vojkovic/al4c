@@ -43,7 +43,7 @@ rm -f /mnt/root/chroot_execute.sh
 rm -f /mnt/root/.bashrc
 
 # Copy firstboot services to new system
-cp systemd/firstboot/install-xanmod-kernel.conf /etc/systemd/system/install-xanmod-kernel.conf
+cp -rf systemd/firstboot/install-xanmod-kernel.service /etc/systemd/system/install-xanmod-kernel.service
 systemctl enable install-xanmod-kernel.service
 
 # Unmount filesystems
