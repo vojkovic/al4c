@@ -12,7 +12,7 @@ swapon "/dev/vda2"
 mount "/dev/vda1" /mnt
 
 # Install base system and install misc basic utilities (mtr, btop, curl, vim, etc.)
-pacstrap -K /mnt base mtr git btop curl vim dhcpcd grub openssh cronie networkmanager fakeroot jq pahole
+pacstrap -K /mnt base linux mtr git btop curl vim dhcpcd grub openssh cronie networkmanager fakeroot jq pahole
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -36,6 +36,20 @@ arch-chroot /mnt
 # Cleanup files
 rm -f /mnt/root/chroot_execute.sh
 rm -f /mnt/root/.bashrc
+
+# Copy chroot_execute.sh to new system
+cp first_boot.sh /mnt/root/first_boot.sh
+
+# Run from .bashrc
+cat <<- _EOF_ | tee /mnt/root/.bashrc
+  # Run first_boot.sh on first start
+  if [ -f "/root/first_boot.sh" ]; then
+    chmod +x /root/first_boot.sh
+    /root/first_boot.sh
+    rm -rf /root/first_boot.sh
+    exit
+  fi
+_EOF_
 
 # Unmount filesystems
 umount -R /mnt
