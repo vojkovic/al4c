@@ -1,8 +1,9 @@
 #!/bin/sh
 
 # Refresh arch keyring
+rm -r /etc/pacman.d/gnupg/
 pacman-key --init
-pacman --noconfirm -Sy archlinux-keyring
+pacman-key --populate
 
 # Partition drive and format filesystem & format swap (3GiB)
 parted -s "/dev/vda" mklabel msdos
