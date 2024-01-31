@@ -31,7 +31,6 @@ jobs:
       - run: cat /etc/os-release
       - run: pacman-key --init
       - run: pacman --noconfirm -Sy archlinux-keyring
-      - run: sed -i 's/GRUB_TIMEOUT=.*$/GRUB_TIMEOUT=0/' /tmp/archlive/airootfs/etc/default/grub
       - run: .github/workflows/0-ISO-Build.sh
       - uses: softprops/action-gh-release@v1
         with:
