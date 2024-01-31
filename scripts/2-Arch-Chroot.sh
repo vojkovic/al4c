@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Runs inside arch-chroot. This script is executed from iso_execute.sh which is executed from build_iso.sh 
+# Runs inside arch-chroot. This script is executed from 1-ISO-Init.sh which is executed from 0-ISO-Build.sh 
 
 SSH_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINcIjMlhHk+GjietfvSXCb6huwkUwtBweW6Ap6+brock"
 

@@ -4,7 +4,9 @@ ConditionFirstBoot=yes
 
 [Service]
 Type=oneshot
-ExecStart=/root/first_boot.sh
+ExecStart=yay -S --answerclean All --answerdiff None --noconfirm linux-xanmod-bin
+ExecStart=grub-mkconfig -o /boot/grub/grub.cfg
+ExecStart=shutdown -r now
 
 [Install]
 WantedBy=multi-user.target

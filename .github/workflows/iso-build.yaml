@@ -31,7 +31,7 @@ jobs:
       - run: cat /etc/os-release
       - run: pacman-key --init
       - run: pacman --noconfirm -Sy archlinux-keyring
-      - run: ./build_iso.sh
+      - run: .github/workflows/0-ISO-Build.sh
       - uses: softprops/action-gh-release@v1
         with:
           files: /tmp/archlive/out/*.iso

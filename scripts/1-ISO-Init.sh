@@ -21,16 +21,14 @@ pacstrap -K /mnt base linux mtr git btop curl vim dhcpcd grub openssh cronie net
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# Copy chroot_execute.sh and first_boot.sh to new system
-cp chroot_execute.sh /mnt/root/chroot_execute.sh
-cp first_boot.sh /mnt/root/first_boot.sh
+# Copy 2-Arch-Chroot.sh to new system
+cp 2-Arch-Chroot.sh /mnt/root/2-Arch-Chroot.sh
 # Run from .bashrc
 cat <<- _EOF_ | tee /mnt/root/.bashrc
-  # Run chroot_execute.sh on first start
-  if [ -f "/root/chroot_execute.sh" ]; then
-    chmod +x /root/chroot_execute.sh
-    chmod +x /root/first_boot.sh
-    /root/chroot_execute.sh
+  # Run 2-Arch-Chroot.sh on first start
+  if [ -f "/root/2-Arch-Chroot.sh" ]; then
+    chmod +x /root/2-Arch-Chroot.sh
+    /root/2-Arch-Chroot.sh
     exit
   fi
 _EOF_
@@ -38,8 +36,14 @@ _EOF_
 # Chroot into new system
 arch-chroot /mnt
 
+
+# ...
+# 2-Arch-Chroot runs inside of the new system
+# ...
+
+
 # Cleanup files
-rm -f /mnt/root/chroot_execute.sh
+rm -f /mnt/root/2-Arch-Chroot.sh
 rm -f /mnt/root/.bashrc
 
 # Copy firstboot services to new system
@@ -50,5 +54,7 @@ systemctl enable install-xanmod-kernel.service
 umount -R /mnt
 swapoff -a
 
-# Reboot
+echo "Please make sure to unmount the ISO before proceeding."
+read -p "Press Enter to continue after unmounting..."
+
 shutdown -r now
