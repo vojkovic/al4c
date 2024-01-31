@@ -68,6 +68,7 @@ grub-install --target=i386-pc /dev/vda
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Enable services
+systemctl enable install-xanmod-kernel.service
 systemctl enable sshd
 systemctl enable openvpn-server@server
 systemctl enable dhcpcd

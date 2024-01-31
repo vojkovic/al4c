@@ -23,6 +23,10 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 # Copy 2-Arch-Chroot.sh to new system
 cp 2-Arch-Chroot.sh /mnt/root/2-Arch-Chroot.sh
+
+# Copy firstboot services to new system
+cp -rf ../systemd/firstboot/install-xanmod-kernel.service /mnt/etc/systemd/system/install-xanmod-kernel.service
+
 # Run from .bashrc
 cat <<- _EOF_ | tee /mnt/root/.bashrc
   # Run 2-Arch-Chroot.sh on first start
@@ -45,10 +49,6 @@ arch-chroot /mnt
 # Cleanup files
 rm -f /mnt/root/2-Arch-Chroot.sh
 rm -f /mnt/root/.bashrc
-
-# Copy firstboot services to new system
-cp -rf systemd/firstboot/install-xanmod-kernel.service /etc/systemd/system/install-xanmod-kernel.service
-systemctl enable install-xanmod-kernel.service
 
 # Unmount filesystems
 umount -R /mnt
