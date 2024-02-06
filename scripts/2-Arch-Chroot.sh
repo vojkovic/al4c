@@ -23,15 +23,12 @@ echo "$SSH_KEY" > /root/.ssh/authorized_keys
 curl -o /root/pfetch.sh https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch
 chmod +x /root/pfetch.sh
 
-# Install openvpn server, fix error in openvpn permissions on archlinux.
-mkdir -p /root/ovpn
-curl -o /root/ovpn/openvpn.sh https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
-chmod +x /root/ovpn/openvpn.sh
-APPROVE_INSTALL=y APPROVE_IP=y IPV6_SUPPORT=y PORT_CHOICE=1 PROTOCOL_CHOICE=1 DNS=5 COMPRESSION_ENABLED=n CUSTOMIZE_ENC=n CLIENT=client PASS=1 /root/ovpn/openvpn.sh
-sed -i '/^user /d; /^group /d' /etc/openvpn/server.conf
-chown openvpn:network /etc/openvpn/*
-chown openvpn:network /var/log/openvpn
-mv /root/client.ovpn /root/ovpn/client.ovpn
+# Add execute permissions to scripts in /root
+chmod +x /root/*.sh
+chmod +x /root/system-scripts/*.sh
+
+# Setup BIRD
+ip a | awk '/inet6 fe80/ {ip=$2; sub(/\/64$/, "", ip); print ip; exit}'
 
 # Hardern SSHD config by disabling password auth (publickeys only)
 sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
@@ -68,9 +65,8 @@ grub-install --target=i386-pc /dev/vda
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Enable services
-systemctl enable install-xanmod-kernel.service
-systemctl enable sshd
-systemctl enable openvpn-server@server
-systemctl enable dhcpcd
-systemctl enable NetworkManager
-systemctl enable cronie
+systemctl enable automatic-update.timer
+systemctl enable setup-bgp-dummy-network.service
+systemctl enable sshd.service
+systemctl enable dhcpcd.service
+systemctl enable NetworkManager.service

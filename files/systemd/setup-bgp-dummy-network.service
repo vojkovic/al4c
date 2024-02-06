@@ -1,0 +1,13 @@
+[Unit]
+Description=Setup Dummy Network Interface
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ip link add dummy1 type dummy
+ExecStart=/usr/bin/ip link set dummy1 up
+ExecStart=/usr/bin/ip -6 addr add 2a0f:85c1:338::1/48 dev dummy1
+ExecStart=/usr/bin/ip -6 route add local 2a0f:85c1:338::/48 dev lo
+
+[Install]
+WantedBy=multi-user.target

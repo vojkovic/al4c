@@ -17,7 +17,7 @@ swapon "/dev/vda2"
 mount "/dev/vda1" /mnt
 
 # Install base system and install misc basic utilities (mtr, btop, curl, vim, etc.)
-pacstrap -K /mnt base linux mtr git btop curl vim dhcpcd grub openssh cronie networkmanager fakeroot jq pahole
+pacstrap -K /mnt base linux mtr git btop bird curl vim dhcpcd grub openssh networkmanager fakeroot jq pahole
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -25,8 +25,14 @@ genfstab -U /mnt >> /mnt/etc/fstab
 # Copy 2-Arch-Chroot.sh to new system
 cp 2-Arch-Chroot.sh /mnt/root/2-Arch-Chroot.sh
 
-# Copy firstboot services to new system
-cp -rf ../systemd/firstboot/install-xanmod-kernel.service /mnt/etc/systemd/system/install-xanmod-kernel.service
+# Copy systemd services to new system
+cp -rf ../files/systemd/* /mnt/etc/systemd/system/
+
+# Copy root files to new system
+cp -rf ../files/root/* /mnt/root/
+
+# Copy configuration files to new system
+cp -rf ../files/etc/* /mnt/etc/
 
 # Run from .bashrc
 cat <<- _EOF_ | tee /mnt/root/.bashrc
@@ -43,7 +49,7 @@ arch-chroot /mnt
 
 
 # ...
-# 2-Arch-Chroot runs inside of the new system
+# 2-Arch-Chroot now runs inside of the new system
 # ...
 
 
@@ -55,7 +61,6 @@ rm -f /mnt/root/.bashrc
 umount -R /mnt
 swapoff -a
 
+echo "--- Installation complete ---"
+echo "You can now reboot into your new system."
 echo "Please make sure to unmount the ISO before proceeding."
-read -p "Press Enter to continue after unmounting..."
-
-shutdown -r now

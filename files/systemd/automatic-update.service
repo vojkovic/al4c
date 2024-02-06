@@ -1,0 +1,5 @@
+[Unit]
+Description=Automatic weekly upgrade
+
+[Service]
+ExecStart=/root/system-scripts/automatic-update.sh
