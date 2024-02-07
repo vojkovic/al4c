@@ -65,6 +65,7 @@ grub-install --target=i386-pc /dev/vda
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Enable services
+systemctl enable tailscaled.service
 systemctl enable automatic-update.timer
 systemctl enable setup-bgp-dummy-network.service
 systemctl enable sshd.service

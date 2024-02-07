@@ -1,5 +1,5 @@
 [Unit]
-Description=Automatic weekly upgrade
+Description=Automatic weekly upgrade timer
 
 [Timer]
 OnCalendar=*-*-* 23:00:00 UTC

@@ -6,6 +6,7 @@ An extremely minimal Arch Linux image as a base OS for me to run containers on v
 - [x] Auto installs itself from an ISO with 0 human interaction.
 - [x] Automatic updates via systemd.
 - [x] yay installed.
+- [x] k3s installation.
 - [x] SSHD harderned, started and loaded with public keys.
 - [x] Dummy network interface for BGP.
 - [x] BIRD installed & configured. Include static routes.
