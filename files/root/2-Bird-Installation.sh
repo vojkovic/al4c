@@ -9,7 +9,7 @@ if [ ! -f /root/age-key.txt ]; then
   exit 1
 fi
 
-echo "Enter the public v6 address as provided in the Vultr Control Panel i.e. 2001:19f0:5801:0ddb:5420:04ff:fe32:02b0:"
+echo "Enter the public v6 address as provided in the Vultr Control Panel i.e. 2001:19f0:5801:0ddb:5420:04ff:fe32:02b0"
 read PUBLICV6
 
 ip address add $PUBLICV6/64 dev ens3

@@ -1,5 +1,16 @@
+#!/bin/bash
+
+# Install K3s server with tailscale
+# Requires age secret key to be present in /root/age-key.txt
+
 ZONE="eu-frankfurt-1"
 REGION="vultrfra"
+
+# Check /root/age-key.txt exists
+if [ ! -f /root/age-key.txt ]; then
+  echo "age secret key not found at /root/age-key.txt"
+  exit 1
+fi
 
 # Ask user for zone location i.e. eu-frankfurt-1
 echo "Enter the zone location (i.e. eu-frankfurt-1):"
@@ -16,6 +27,7 @@ TSKEY=$(cat /root/secrets/tailscale-key.age | age --decrypt -i /root/age-key.txt
 PUBLICV4=$(curl -s https://v4.ident.me)
 PUBLICV6=$(curl -s https://v6.ident.me)
 
+# Install our Kubernetes Distribution (K3s) with Tailscale
 curl -sfL https://get.k3s.io | sh -s - server \
     "--flannel-ipv6-masq" \
     "--cluster-cidr=10.10.0.0/16,fd42::/48" \
@@ -37,3 +49,5 @@ curl -sfL https://get.k3s.io | sh -s - server \
 
 # Make tailscale node advertise as an exit node
 tailscale up --advertise-exit-node --accept-routes --advertise-routes=10.10.0.0/22,fd42::/64
+
+exit 0
