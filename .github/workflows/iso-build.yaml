@@ -26,8 +26,6 @@ jobs:
       options: --privileged
     steps:
       - uses: actions/checkout@v4
-      - run: pwd
-      - run: find .
       - run: cat /etc/os-release
       - run: pacman-key --init
       - run: pacman --noconfirm -Sy archlinux-keyring
