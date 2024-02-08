@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Find and replace placeholder values in /etc/bird.conf
-# Requires age secret key to be present in /root/age-key.txt
+# Requires age secret key to be present in /root/.config/sops/age/keys.txt
 
-# Check /root/age-key.txt exists
-if [ ! -f /root/age-key.txt ]; then
-  echo "age secret key not found at /root/age-key.txt"
+# Check /root/.config/sops/age/keys.txt exists
+if [ ! -f /root/.config/sops/age/keys.txt ]; then
+  echo "age secret key not found at /root/.config/sops/age/keys.txt"
   exit 1
 fi
 
@@ -14,7 +14,7 @@ read PUBLICV6
 
 ip address add $PUBLICV6/64 dev ens3
 
-BGPPASSWORD=$(cat /etc/bird-password.age | age --decrypt -i /root/age-key.txt)
+BGPPASSWORD=$(cat /etc/bird-password.age | age --decrypt -i /root/.config/sops/age/keys.txt)
 LINKLOCAL=$(ip a | awk '/inet6 fe80/ {ip=$2; sub(/\/64$/, "", ip); print ip; exit}')
 PUBLICV4=$(curl -s https://v4.ident.me)
 

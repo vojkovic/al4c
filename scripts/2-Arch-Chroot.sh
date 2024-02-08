@@ -2,7 +2,7 @@
 
 # Runs inside arch-chroot. This script is executed from 1-ISO-Init.sh which is executed from 0-ISO-Build.sh 
 
-SSH_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINcIjMlhHk+GjietfvSXCb6huwkUwtBweW6Ap6+brock"
+SSH_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINcIjMlhHk+GjietfvSXCb6huwkUwtBweW6Ap6+brock" # github.com/vojkovic.keys
 
 # Timezone to Greenwich Mean Time
 ln -sf /usr/share/zoneinfo/GMT /etc/localtime
@@ -10,10 +10,7 @@ hwclock --systohc
 
 # Set locale
 sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
-locale-gen
-
-# Set hostname to country of server by quering https://ipapi.co/country which returns a two letter country code (i.e. AU). Convert cc to lowercase.
-echo $(curl -s https://ipapi.co/country) | tr '[:upper:]' '[:lower:]' > /etc/hostname
+locale-gen 
 
 # Set ssh key
 mkdir -p /root/.ssh
@@ -63,6 +60,9 @@ mkinitcpio -P
 # boot loader
 grub-install --target=i386-pc /dev/vda
 grub-mkconfig -o /boot/grub/grub.cfg
+
+# Add variable KUBECONFIG to /root/.bashrc
+echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" >> /root/.bashrc
 
 # Enable services
 systemctl enable tailscaled.service

@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Install K3s server with tailscale
-# Requires age secret key to be present in /root/age-key.txt
+# Requires age secret key to be present in /root/.config/sops/age/keys.txt
 
 ZONE="eu-frankfurt-1"
 REGION="vultrfra"
 
-# Check /root/age-key.txt exists
-if [ ! -f /root/age-key.txt ]; then
-  echo "age secret key not found at /root/age-key.txt"
+# Check /root/.config/sops/age/keys.txt exists
+if [ ! -f /root/.config/sops/age/keys.txt ]; then
+  echo "age secret key not found at /root/.config/sops/age/keys.txt"
   exit 1
 fi
 
@@ -20,19 +20,15 @@ read ZONE
 echo "Enter the region location (i.e. vultrfra):"
 read REGION
 
-# Ask user for K3s token
-echo "Enter the K3s token:"
-read TOKEN
-
 # Get Tailscale key from age encrypted file
-TSKEY=$(cat /root/secrets/tailscale-key.age | age --decrypt -i /root/age-key.txt)
+TSKEY=$(cat /root/secrets/tailscale-key.age | age --decrypt -i /root/.config/sops/age/keys.txt)
 
 # Get public IPv4 and IPv6 addresses
 PUBLICV4=$(curl -s https://v4.ident.me)
 PUBLICV6=$(curl -s https://v6.ident.me)
 
 # Install our Kubernetes Distribution (K3s) with Tailscale
-curl -sfL https://get.k3s.io | K3S_TOKEN=$TOKEN sh -s - server \
+curl -sfL https://get.k3s.io | sh -s - server \
     "--node-name=$ZONE" \
     "--flannel-ipv6-masq" \
     "--cluster-cidr=10.10.0.0/16,fd42::/48" \

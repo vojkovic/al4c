@@ -34,6 +34,9 @@ cp -rf ../files/root/* /mnt/root/
 # Copy configuration files to new system
 cp -rf ../files/etc/* /mnt/etc/
 
+# Copy across /etc/hostname from live system (set by cloud-init)
+cp -rf /etc/hostname /mnt/etc/hostname
+
 # Run from .bashrc
 cat <<- _EOF_ | tee /mnt/root/.bashrc
   # Run 2-Arch-Chroot.sh on first start
