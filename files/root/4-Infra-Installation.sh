@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Install infrastructure from git repository
 # Requires age secret key to be present in /root/age-key.txt
 
 # Check /root/age-key.txt exists
