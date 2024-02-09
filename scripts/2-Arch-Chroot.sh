@@ -61,9 +61,6 @@ mkinitcpio -P
 grub-install --target=i386-pc /dev/vda
 grub-mkconfig -o /boot/grub/grub.cfg
 
-# Add variable KUBECONFIG to /root/.bashrc
-echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" >> /root/.bashrc
-
 # Enable services
 systemctl enable tailscaled.service
 systemctl enable automatic-update.timer
