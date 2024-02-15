@@ -11,10 +11,6 @@ fi
 git clone https://github.com/vojkovic/infra.git --depth 1 /root/infra
 cd /root/infra
 
-# Install helm plugins
-helm plugin install https://github.com/databus23/helm-diff
-helm plugin install https://github.com/jkroepke/helm-secrets
-
 # Start helmfile
 helmfile -f install-argocd.yaml apply
 

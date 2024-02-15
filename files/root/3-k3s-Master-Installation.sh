@@ -33,6 +33,7 @@ curl -sfL https://get.k3s.io | sh -s - server \
     "--flannel-ipv6-masq" \
     "--cluster-cidr=10.10.0.0/16,fd42::/48" \
     "--service-cidr=10.43.0.0/16,fd43::/112" \
+    "--cluster-dns=169.254.20.25" \
     "--node-label=failure-domain.beta.kubernetes.io/zone=$ZONE" \
     "--node-label=failure-domain.beta.kubernetes.io/region=$REGION" \
     "--vpn-auth="name=tailscale,joinKey=$TSKEY"" \
@@ -47,6 +48,10 @@ curl -sfL https://get.k3s.io | sh -s - server \
     "--kubelet-arg=max-pods=500" \
     "--tls-san=$PUBLICV4" \
     "--tls-san=$PUBLICV6"
+
+# Install helm plugins
+helm plugin install https://github.com/databus23/helm-diff
+helm plugin install https://github.com/jkroepke/helm-secrets
 
 # Make tailscale node advertise as an exit node
 tailscale up --advertise-exit-node --accept-routes --advertise-routes=10.10.0.0/22,fd42::/64

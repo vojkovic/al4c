@@ -44,6 +44,10 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=$TOKEN sh -s - agent \
     "--node-label=failure-domain.beta.kubernetes.io/region=$REGION" \
     "--vpn-auth="name=tailscale,joinKey=$TSKEY""
 
+# Install helm plugins
+helm plugin install https://github.com/databus23/helm-diff
+helm plugin install https://github.com/jkroepke/helm-secrets
+
 # Make tailscale node advertise as an exit node
 tailscale up --advertise-exit-node --accept-routes --advertise-routes=10.10.0.0/22,fd42::/64
 
