@@ -60,9 +60,6 @@ arch-chroot /mnt
 rm -f /mnt/root/2-Arch-Chroot.sh
 rm -f /mnt/root/.bashrc
 
-# Add variable KUBECONFIG to /root/.bashrc
-echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" >> /mnt/root/.bashrc
-
 # Unmount filesystems
 umount -R /mnt
 swapoff -a
