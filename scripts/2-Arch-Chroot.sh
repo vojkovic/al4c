@@ -57,7 +57,8 @@ rm -rf yay_12.2.0_x86_64
 # initramfs
 mkinitcpio -P
 
-# boot loader
+# boot loader (disable waiting for GRUB)
+sed -i 's/GRUB_TIMEOUT=[0-9]\+/GRUB_TIMEOUT=0/' /etc/default/grub
 grub-install --target=i386-pc /dev/vda
 grub-mkconfig -o /boot/grub/grub.cfg
 
