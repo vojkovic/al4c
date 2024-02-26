@@ -2,8 +2,6 @@
 
 # Runs inside arch-chroot. This script is executed from 1-ISO-Init.sh which is executed from 0-ISO-Build.sh 
 
-SSH_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINcIjMlhHk+GjietfvSXCb6huwkUwtBweW6Ap6+brock" # github.com/vojkovic.keys
-
 # Timezone to Greenwich Mean Time
 ln -sf /usr/share/zoneinfo/GMT /etc/localtime
 hwclock --systohc
@@ -11,10 +9,6 @@ hwclock --systohc
 # Set locale
 sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
 locale-gen 
-
-# Set ssh key
-mkdir -p /root/.ssh
-echo "$SSH_KEY" > /root/.ssh/authorized_keys
 
 # Download pfetch script to root home directory.
 curl -o /root/pfetch.sh https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch
@@ -26,9 +20,6 @@ chmod +x /root/system-scripts/*.sh
 
 # Setup BIRD
 ip a | awk '/inet6 fe80/ {ip=$2; sub(/\/64$/, "", ip); print ip; exit}'
-
-# Hardern SSHD config by disabling password auth (publickeys only)
-sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 
 # Edit pacman.conf to enable useful things for a server.
 sed -i 's/#Color/Color/' /etc/pacman.conf
@@ -69,6 +60,5 @@ echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" | tee -a /etc/profile.d/kubec
 systemctl enable tailscaled.service
 systemctl enable automatic-update.timer
 systemctl enable setup-bgp-dummy-network.service
-systemctl enable sshd.service
 systemctl enable dhcpcd.service
 systemctl enable NetworkManager.service
