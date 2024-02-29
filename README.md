@@ -9,6 +9,7 @@ An extremely minimal Arch Linux image as a base OS for me to run containers on v
 - [x] k3s installation.
 - [x] Tailscale automatic installation and onboarding.
 - [x] Under 180 packages installed.
+- [x] SSHD harderned, started and loaded with public keys.
 - [x] Dummy network interface for BGP.
 - [x] BIRD installed & configured. Include static routes.
 - [x] dhcpcd installed & running.
