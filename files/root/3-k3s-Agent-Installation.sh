@@ -49,6 +49,6 @@ helm plugin install https://github.com/databus23/helm-diff
 helm plugin install https://github.com/jkroepke/helm-secrets
 
 # Make tailscale node advertise as an exit node
-tailscale up --advertise-exit-node --ssh --accept-routes --advertise-routes=10.10.0.0/22,fd42::/64
+tailscale up --advertise-exit-node --accept-routes --advertise-routes=10.10.0.0/22,fd42::/64
 
 exit 0
