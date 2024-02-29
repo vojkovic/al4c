@@ -54,7 +54,7 @@ helm plugin install https://github.com/databus23/helm-diff
 helm plugin install https://github.com/jkroepke/helm-secrets
 
 # Make tailscale node advertise as an exit node
-tailscale up --advertise-exit-node --accept-routes --advertise-routes=10.10.0.0/22,fd42::/64
+tailscale up --advertise-exit-node --ssh --accept-routes --advertise-routes=10.10.0.0/22,fd42::/64
 
 TOKEN_FROM_FILE=$(cat /var/lib/rancher/k3s/server/node-token)
 echo "The token in /var/lib/rancher/k3s/server/node-token is: $TOKEN_FROM_FILE"
