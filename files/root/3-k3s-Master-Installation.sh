@@ -40,7 +40,6 @@ curl -sfL https://get.k3s.io | sh -s - server \
     "--flannel-external-ip" \
     "--disable=traefik" \
     "--disable=metrics-server" \
-    "--disable=coredns" \
     "--disable=local-storage" \
     "--node-external-ip=$PUBLICV4" \
     "--node-external-ip=$PUBLICV6" \

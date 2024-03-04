@@ -11,10 +11,9 @@ fi
 git clone https://github.com/vojkovic/infra.git --depth 1 /root/infra
 cd /root/infra
 
-# Start helmfile
-helmfile -f install-argocd.yaml apply
+helmfile -f install-argocd.yaml sync
 
-# Wait for ArgoCD to be ready
-k3s kubectl apply -f ./argocd-application-set.yaml
+# Apply ArgoCD CRDs
+# k3s kubectl apply -f ./argocd-applications/*.yaml
 
 exit 0
