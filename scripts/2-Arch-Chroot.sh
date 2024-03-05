@@ -68,7 +68,5 @@ echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" | tee -a /etc/profile.d/kubec
 # Enable services
 systemctl enable tailscaled.service
 systemctl enable automatic-update.timer
-systemctl enable setup-bgp-dummy-network.service
 systemctl enable sshd.service
-systemctl enable dhcpcd.service
 systemctl enable NetworkManager.service

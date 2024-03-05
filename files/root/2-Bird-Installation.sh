@@ -26,7 +26,8 @@ sed -i "s/PLACEHOLDER-REPLACE-WITH-PASSWORD/$BGPPASSWORD/" /etc/bird.conf
 # Remove bird-password.age as it is no longer needed
 rm /etc/bird-password.age
 
-# Enable BIRD
+# Enable BIRD and enable setup-bgp-dummy-network.service
+systemctl enable setup-bgp-dummy-network.service
 systemctl enable bird
 
 # Start BIRD

@@ -12,7 +12,6 @@ An extremely minimal Arch Linux image as a base OS for me to run containers on v
 - [x] SSHD harderned, started and loaded with public keys.
 - [x] Dummy network interface for BGP.
 - [x] BIRD installed & configured. Include static routes.
-- [x] dhcpcd installed & running.
 - [x] install misc basic utilities (mtr, btop, curl, vim, etc.)
 - [x] grub ready to go.
 - [x] xanmod v3 kernel
