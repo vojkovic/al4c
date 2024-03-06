@@ -33,11 +33,12 @@ curl -sfL https://get.k3s.io | sh -s - server \
     "--flannel-ipv6-masq" \
     "--cluster-cidr=10.10.0.0/16,fd42::/48" \
     "--service-cidr=10.43.0.0/16,fd43::/112" \
-    "--cluster-dns=169.254.20.25" \
+    "--cluster-dns=10.43.0.10" \
     "--node-label=failure-domain.beta.kubernetes.io/zone=$ZONE" \
     "--node-label=failure-domain.beta.kubernetes.io/region=$REGION" \
     "--vpn-auth="name=tailscale,joinKey=$TSKEY"" \
-    "--flannel-external-ip" \
+    "---flannel-backend=none" \
+    "--disable-network-policy" \
     "--disable=traefik" \
     "--disable=metrics-server" \
     "--disable=local-storage" \
