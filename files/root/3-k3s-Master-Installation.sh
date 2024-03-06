@@ -37,8 +37,9 @@ curl -sfL https://get.k3s.io | sh -s - server \
     "--node-label=failure-domain.beta.kubernetes.io/zone=$ZONE" \
     "--node-label=failure-domain.beta.kubernetes.io/region=$REGION" \
     "--vpn-auth="name=tailscale,joinKey=$TSKEY"" \
-    "--flannel-backend=none" \
-    "--disable-network-policy" \
+    "--flannel-external-ip" \
+    "--flannel-backend=wireguard-native" \
+    "--flannel-iface=tailscale0" \
     "--disable=traefik" \
     "--disable=metrics-server" \
     "--disable=local-storage" \
