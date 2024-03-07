@@ -42,8 +42,6 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=$TOKEN sh -s - agent \
     "--node-name=$ZONE" \
     "--node-label=failure-domain.beta.kubernetes.io/zone=$ZONE" \
     "--node-label=failure-domain.beta.kubernetes.io/region=$REGION" \
-    "--flannel-external-ip" \
-    "--flannel-iface=tailscale0" \
     "--node-external-ip=$PUBLICV4" \
     "--node-external-ip=$PUBLICV6" \
     "--vpn-auth="name=tailscale,joinKey=$TSKEY""

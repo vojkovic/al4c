@@ -30,16 +30,15 @@ PUBLICV6=$(curl -s https://v6.ident.me)
 # Install our Kubernetes Distribution (K3s) with Tailscale
 curl -sfL https://get.k3s.io | sh -s - server \
     "--node-name=$ZONE" \
-    "--flannel-ipv6-masq" \
     "--cluster-cidr=10.10.0.0/16,fd42::/48" \
     "--service-cidr=10.43.0.0/16,fd43::/112" \
     "--cluster-dns=10.43.0.10" \
     "--node-label=failure-domain.beta.kubernetes.io/zone=$ZONE" \
     "--node-label=failure-domain.beta.kubernetes.io/region=$REGION" \
     "--vpn-auth="name=tailscale,joinKey=$TSKEY"" \
+    "--flannel-ipv6-masq" \
     "--flannel-external-ip" \
     "--flannel-backend=wireguard-native" \
-    "--flannel-iface=tailscale0" \
     "--disable=traefik" \
     "--disable=metrics-server" \
     "--disable=local-storage" \
