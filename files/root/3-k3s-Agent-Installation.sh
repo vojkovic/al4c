@@ -38,7 +38,7 @@ PUBLICV6=$(curl -s https://v6.ident.me)
 
 # Install our Kubernetes Distribution (K3s) with Tailscale
 curl -sfL https://get.k3s.io | K3S_TOKEN=$TOKEN sh -s - agent \
-    "-server=$K3S_SERVER" \
+    "--server=$K3S_SERVER" \
     "--node-name=$ZONE" \
     "--node-label=failure-domain.beta.kubernetes.io/zone=$ZONE" \
     "--node-label=failure-domain.beta.kubernetes.io/region=$REGION" \

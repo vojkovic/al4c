@@ -38,7 +38,6 @@ curl -sfL https://get.k3s.io | sh -s - server \
     "--vpn-auth="name=tailscale,joinKey=$TSKEY"" \
     "--flannel-ipv6-masq" \
     "--flannel-external-ip" \
-    "--flannel-backend=wireguard-native" \
     "--disable=traefik" \
     "--disable=metrics-server" \
     "--disable=local-storage" \
