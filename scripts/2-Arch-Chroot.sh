@@ -16,6 +16,10 @@ locale-gen
 mkdir -p /root/.ssh
 echo "$SSH_KEY" > /root/.ssh/authorized_keys
 
+# Add loopback addresses to /etc/hosts
+echo "127.0.0.1 localhost" | tee -a /etc/hosts
+echo "::1       localhost ip6-localhost ip6-loopback" | tee -a /etc/hosts
+
 # Download pfetch script to root home directory.
 curl -o /root/pfetch.sh https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch
 chmod +x /root/pfetch.sh
@@ -69,4 +73,5 @@ echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" | tee -a /etc/profile.d/kubec
 systemctl enable tailscaled.service
 systemctl enable automatic-update.timer
 systemctl enable sshd.service
-systemctl enable NetworkManager.service
+systemctl enable systemd-resolved.service
+systemctl enable systemd-networkd.service
