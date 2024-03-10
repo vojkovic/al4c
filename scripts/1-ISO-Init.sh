@@ -17,7 +17,7 @@ swapon "/dev/vda2"
 mount "/dev/vda1" /mnt
 
 # Install base system and install misc basic utilities (mtr, btop, curl, vim, etc.)
-pacstrap -K /mnt base linux mtr git btop bird age curl vim helm helmfile sops grub openssh tailscale fakeroot jq pahole
+pacstrap -K /mnt base linux mtr git btop bird age curl vim helm helmfile sops grub openssh dhcpcd tailscale fakeroot jq pahole
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
