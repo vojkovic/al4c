@@ -3,22 +3,11 @@
 # Install K3s server with tailscale
 # Requires age secret key to be present in /root/.config/sops/age/keys.txt
 
-ZONE="eu-frankfurt-1"
-REGION="vultrfra"
-
 # Check /root/.config/sops/age/keys.txt exists
 if [ ! -f /root/.config/sops/age/keys.txt ]; then
   echo "age secret key not found at /root/.config/sops/age/keys.txt"
   exit 1
 fi
-
-# Ask user for zone location i.e. eu-frankfurt-1
-echo "Enter the zone location (i.e. eu-frankfurt-1):"
-read ZONE
-
-# Ask user for region location i.e. vultrfra
-echo "Enter the region location (i.e. vultrfra):"
-read REGION
 
 # Ask user for K3s token
 echo "Enter the K3s token:"
@@ -27,6 +16,9 @@ read TOKEN
 # Ask user for K3s server
 echo "Enter the K3s server (i.e. https://myserver:6443):"
 read K3S_SERVER
+
+# Set ZONE to the hostname of the machine
+ZONE=$(cat /etc/hostname)
 
 # Get Tailscale key from age encrypted file
 TSKEY=$(cat /root/secrets/tailscale-key.age | age --decrypt -i /root/.config/sops/age/keys.txt)
@@ -41,7 +33,6 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=$TOKEN sh -s - agent \
     "--server=$K3S_SERVER" \
     "--node-name=$ZONE" \
     "--node-label=failure-domain.beta.kubernetes.io/zone=$ZONE" \
-    "--node-label=failure-domain.beta.kubernetes.io/region=$REGION" \
     "--node-external-ip=$PUBLICV4" \
     "--node-external-ip=$PUBLICV6" \
     "--vpn-auth="name=tailscale,joinKey=$TSKEY""

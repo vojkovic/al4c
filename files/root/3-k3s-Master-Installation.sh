@@ -3,22 +3,14 @@
 # Install K3s server with tailscale
 # Requires age secret key to be present in /root/.config/sops/age/keys.txt
 
-ZONE="eu-frankfurt-1"
-REGION="vultrfra"
-
 # Check /root/.config/sops/age/keys.txt exists
 if [ ! -f /root/.config/sops/age/keys.txt ]; then
   echo "age secret key not found at /root/.config/sops/age/keys.txt"
   exit 1
 fi
 
-# Ask user for zone location i.e. eu-frankfurt-1
-echo "Enter the zone location (i.e. eu-frankfurt-1):"
-read ZONE
-
-# Ask user for region location i.e. vultrfra
-echo "Enter the region location (i.e. vultrfra):"
-read REGION
+# Set ZONE to the hostname of the machine
+ZONE=$(cat /etc/hostname)
 
 # Get Tailscale key from age encrypted file
 TSKEY=$(cat /root/secrets/tailscale-key.age | age --decrypt -i /root/.config/sops/age/keys.txt)
@@ -34,7 +26,6 @@ curl -sfL https://get.k3s.io | sh -s - server \
     "--service-cidr=10.43.0.0/16,fd43::/112" \
     "--cluster-dns=10.43.0.10" \
     "--node-label=failure-domain.beta.kubernetes.io/zone=$ZONE" \
-    "--node-label=failure-domain.beta.kubernetes.io/region=$REGION" \
     "--vpn-auth="name=tailscale,joinKey=$TSKEY"" \
     "--flannel-ipv6-masq" \
     "--flannel-external-ip" \
@@ -45,8 +36,7 @@ curl -sfL https://get.k3s.io | sh -s - server \
     "--node-external-ip=$PUBLICV6" \
     "--kube-controller-manager-arg=node-cidr-mask-size-ipv4=22" \
     "--kubelet-arg=max-pods=500" \
-    "--tls-san=$PUBLICV4" \
-    "--tls-san=$PUBLICV6"
+    "--tls-san=$ZONE" \
 
 # Install helm plugins
 helm plugin install https://github.com/databus23/helm-diff
