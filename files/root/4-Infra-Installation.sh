@@ -17,6 +17,10 @@ cd /root/infra
 helmfile -f install-argocd.yaml sync
 
 # Apply ArgoCD CRDs
-# k3s kubectl apply -f ./argocd-applications/*.yaml
+kubectl apply -f ./argocd-applications/cert-manager-application.yaml
+kubectl apply -f ./argocd-applications/cyberchef-application.yaml
+kubectl apply -f ./argocd-applications/ingress-nginx-application.yaml
+kubectl apply -f ./argocd-applications/kube-system-application.yaml
+kubectl apply -f ./argocd-applications/searxng-application.yaml
 
 exit 0
