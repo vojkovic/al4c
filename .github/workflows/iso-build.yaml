@@ -1,8 +1,7 @@
-# This workflow will build an Arch Linux ISO file with the commit on it
-
 name: Build Arch ISO with ArchInstall Commit
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -22,7 +21,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: archlinux:latest
+      image: archlinux/archlinux:latest
       options: --privileged
     steps:
       - uses: actions/checkout@v4
