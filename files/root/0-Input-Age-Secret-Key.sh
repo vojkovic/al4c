@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Asks user for age secret key and outputs file to /root/.config/sops/age/keys.txt
+# Asks user for age secret key and outputs file to /root/.config/age/key.txt
 
 echo "Enter the age secret key:"
 read AGE_KEY
@@ -9,9 +9,9 @@ read AGE_KEY
 mkdir -p /root/.config/sops/age
 
 # Write age key to file
-echo "$AGE_KEY" > /root/.config/sops/age/keys.txt
-chmod 600 /root/.config/sops/age/keys.txt
+echo "$AGE_KEY" > /root/.config/age/key.txt
+chmod 600 /root/.config/age/key.txt
 
-echo "age secret key written to /root/.config/sops/age/keys.txt"
+echo "age secret key written to /root/.config/age/key.txt"
 
 exit 0
